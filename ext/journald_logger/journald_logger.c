@@ -12,9 +12,9 @@ void jdl_init_constants();
 void jdl_init_methods();
 
 /* methods */
-VALUE jdl_native_print(VALUE v_self, VALUE priority, VALUE message);
+VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
 //VALUE jdl_native_send();
-VALUE jdl_native_perror(VALUE v_self, VALUE message);
+VALUE jdl_native_perror(VALUE self, VALUE message);
 
 VALUE mJournald;
 VALUE mNative;
