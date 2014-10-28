@@ -1,0 +1,5 @@
+= journald-logger
+
+Logger that logs directly to systemd-journal
+
+Work in progress, still not usable
