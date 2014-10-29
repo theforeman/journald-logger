@@ -17,4 +17,4 @@ abort 'systemd/sd-journal.h is missing. please install systemd-journal' unless f
    abort "#{func}() is missing. systemd-journal is not usable" unless find_library('systemd-journal', func)
 end
 
-create_makefile('journald_logger/journald_logger')
+create_makefile('journald_logger')
