@@ -7,17 +7,17 @@
 void Init_journald_logger();
 
 /* initializers */
-void jdl_init_modules();
-void jdl_init_constants();
-void jdl_init_methods();
+static void jdl_init_modules();
+static void jdl_init_constants();
+static void jdl_init_methods();
 
 /* methods */
-VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
+static VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
 //VALUE jdl_native_send();
-VALUE jdl_native_perror(VALUE self, VALUE message);
+static VALUE jdl_native_perror(VALUE self, VALUE message);
 
-VALUE mJournald;
-VALUE mNative;
+static VALUE mJournald;
+static VALUE mNative;
 
 void Init_journald_logger()
 {
@@ -26,13 +26,13 @@ void Init_journald_logger()
     jdl_init_methods();
 }
 
-void jdl_init_modules()
+static void jdl_init_modules()
 {
     mJournald = rb_define_module("Journald");
     mNative   = rb_define_module_under(mJournald, "Native");
 }
 
-void jdl_init_constants()
+static void jdl_init_constants()
 {
     rb_define_const(mJournald, "LOG_EMERG",   INT2NUM(LOG_EMERG));    /* system is unusable */
     rb_define_const(mJournald, "LOG_ALERT",   INT2NUM(LOG_ALERT));    /* action must be taken immediately */
@@ -44,14 +44,14 @@ void jdl_init_constants()
     rb_define_const(mJournald, "LOG_DEBUG",   INT2NUM(LOG_DEBUG));    /* debug-level messages */
 }
 
-void jdl_init_methods()
+static void jdl_init_methods()
 {
     rb_define_singleton_method(mNative, "print",  jdl_native_print, 2);
     //rb_define_singleton_method(mNative, "send", jdl_native_send, );
     rb_define_singleton_method(mNative, "perror", jdl_native_perror, 1);
 }
 
-VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
+static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 {
     int priority, result;
     char *message;
@@ -64,7 +64,7 @@ VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     return INT2NUM(result);
 }
 
-VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
+static VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
 {
     int result;
     char *message;
