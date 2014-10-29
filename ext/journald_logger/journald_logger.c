@@ -13,9 +13,13 @@ static void jdl_init_methods();
 
 /* methods */
 static VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
-//VALUE jdl_native_send();
+//static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self);
 static VALUE jdl_native_perror(VALUE self, VALUE message);
 
+/* aux */
+static char * jdl_alloc_safe_string(VALUE string);
+
+/* globals */
 static VALUE mJournald;
 static VALUE mNative;
 
@@ -57,9 +61,11 @@ static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     char *message;
 
     priority = NUM2INT(v_priority);
-    message  = RSTRING_PTR(v_message);
+    message  = jdl_alloc_safe_string(v_message);
 
     result = sd_journal_print(priority, "%s", message);
+
+    free(message);
 
     return INT2NUM(result);
 }
@@ -69,9 +75,42 @@ static VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
     int result;
     char *message;
 
-    message = RSTRING_PTR(v_message);
+    message = jdl_alloc_safe_string(v_message);
 
     result = sd_journal_perror(message);
 
+    free(message);
+
     return INT2NUM(result);
+}
+
+/**
+ * Remove zeros from string and ensure it's zero-terminated
+ */
+static char * jdl_alloc_safe_string(VALUE v_string)
+{
+    char  *str;
+    size_t len;
+
+    char  *newstr,
+          *ptr;
+    size_t i;
+
+    /* convert tos sring */
+    StringValue(v_string);
+
+    str = RSTRING_PTR(v_string);
+    len = RSTRING_LEN(v_string);
+
+    newstr = calloc(len + 1, sizeof(char));
+
+    for (i = 0, ptr = newstr; i < len; i++) {
+        if (str[i]) {
+            *(ptr++) = str[i];
+        }
+    }
+
+    *ptr = '\0';
+
+    return newstr;
 }
