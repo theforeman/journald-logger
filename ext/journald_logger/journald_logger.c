@@ -13,7 +13,7 @@ static void jdl_init_methods();
 
 /* methods */
 static VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
-//static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self);
+static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self);
 static VALUE jdl_native_perror(VALUE self, VALUE message);
 
 /* aux */
@@ -50,8 +50,8 @@ static void jdl_init_constants()
 
 static void jdl_init_methods()
 {
-    rb_define_singleton_method(mNative, "print",  jdl_native_print, 2);
-    //rb_define_singleton_method(mNative, "send", jdl_native_send, );
+    rb_define_singleton_method(mNative, "print",  jdl_native_print,  2);
+    rb_define_singleton_method(mNative, "send",   jdl_native_send,  -1); // -1 to pass as C array
     rb_define_singleton_method(mNative, "perror", jdl_native_perror, 1);
 }
 
@@ -66,6 +66,29 @@ static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     result = sd_journal_print(priority, "%s", message);
 
     free(message);
+
+    return INT2NUM(result);
+}
+
+static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self)
+{
+    //const char * fmt = "%s";
+    struct iovec *msgs;
+    size_t i;
+    int result;
+
+    msgs = calloc(argc, sizeof(struct iovec));
+
+    for (i = 0; i < argc; i++) {
+        VALUE v = argv[i];
+        StringValue(v);
+        msgs[i].iov_base = RSTRING_PTR(v);
+        msgs[i].iov_len  = RSTRING_LEN(v);
+    }
+
+    result = sd_journal_sendv(msgs, argc);
+
+    free(msgs);
 
     return INT2NUM(result);
 }
