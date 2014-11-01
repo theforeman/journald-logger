@@ -1,5 +1,5 @@
 require 'journald/logger/version'
-require_relative '../journald_logger'
+require 'journald/native'
 
 module Journald
   module Logger

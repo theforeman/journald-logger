@@ -17,9 +17,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.extensions << 'ext/journald_logger/extconf.rb'
+  spec.required_ruby_version = '>= 1.9.2'
+
+  spec.add_runtime_dependency 'journald-native', '~> 1.0'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rake-compiler'
 end
