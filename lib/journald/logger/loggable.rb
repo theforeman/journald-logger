@@ -3,8 +3,18 @@ module Journald
     module Loggable
       # ruby Logger style
 
+      # our map differs from Syslog::Logger
+      LEVEL_MAP = {
+          ::Logger::UNKNOWN => LOG_ALERT,
+          ::Logger::FATAL   => LOG_CRIT,
+          ::Logger::ERROR   => LOG_ERR,
+          ::Logger::WARN    => LOG_WARNING,
+          ::Logger::INFO    => LOG_INFO,
+          ::Logger::DEBUG   => LOG_DEBUG,
+      }
+
       def add(severity, message = nil, progname = nil, &block)
-        priority    = LEVEL_MAP[severity] || LEVEL_MAP[::Logger::UNKNOWN]
+        priority = severity_to_priority(severity) || LEVEL_MAP[::Logger::UNKNOWN]
 
         # some black magic from Logger O__o
         progname ||= self.progname
@@ -23,6 +33,8 @@ module Journald
             syslog_identifier: progname,
         })
       end
+
+      alias_method :log, :add
 
       # add methods a la Logger.warn or Logger.error
       ::Logger::Severity::constants.each do |severity|
@@ -63,6 +75,11 @@ module Journald
       def datetime_format=(_); end
 
       def close; end
+
+      private
+        def severity_to_priority(severity)
+          LEVEL_MAP[severity]
+        end
     end
   end
 end

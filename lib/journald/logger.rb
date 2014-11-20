@@ -11,16 +11,6 @@ require_relative 'tracer_logger'
 
 module Journald
   class Logger
-    # our map differs from Syslog::Logger
-    LEVEL_MAP = {
-        ::Logger::UNKNOWN => LOG_ALERT,
-        ::Logger::FATAL   => LOG_CRIT,
-        ::Logger::ERROR   => LOG_ERR,
-        ::Logger::WARN    => LOG_WARNING,
-        ::Logger::INFO    => LOG_INFO,
-        ::Logger::DEBUG   => LOG_DEBUG,
-    }
-
     include Exceptionable
     include Loggable
     include Sysloggable
