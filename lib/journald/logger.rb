@@ -1,5 +1,4 @@
 require 'logger'
-require 'syslog/logger'
 require 'journald/native'
 
 require_relative 'logger/version'
