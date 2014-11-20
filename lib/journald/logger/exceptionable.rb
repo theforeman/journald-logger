@@ -8,8 +8,12 @@ module Journald
       private
 
         def real_exception(e, priority, is_cause)
-          cause = nil
-          cause = e.cause if e.respond_to? :cause
+          # for Ruby 2.1 get cause if present
+          cause = if e.respond_to? :cause; e.cause; end
+          # for Ruby 2.1 get backtrace if present
+          bt = e.respond_to?(:backtrace_locations) && e.backtrace_locations.length > 0
+
+          tag_trace_location(e.backtrace_locations[0]) if bt
 
           send({
               priority:                 priority,
@@ -20,6 +24,8 @@ module Journald
               backtrace:                e.backtrace.join("\n"),
               cause:                    cause ? cause.inspect : nil,
           })
+
+          untag_trace_location if bt
 
           real_exception(cause, priority, true) if cause
         end

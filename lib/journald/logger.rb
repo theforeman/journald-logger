@@ -7,6 +7,8 @@ require_relative 'logger/exceptionable'
 require_relative 'logger/loggable'
 require_relative 'logger/sysloggable'
 
+require_relative 'tracer_logger'
+
 module Journald
   class Logger
     # our map differs from Syslog::Logger
@@ -73,6 +75,25 @@ module Journald
     def untag(key)
       @tags.delete(key)
     end
+
+    protected
+
+      def tag_trace_location(location)
+        tag :code_file, location.path
+        tag :code_line, location.lineno
+        tag :code_func, location.label
+
+        if block_given?
+          yield
+          untag_trace_location
+        end
+      end
+
+      def untag_trace_location
+        untag :code_file
+        untag :code_line
+        untag :code_func
+      end
 
     private
 
