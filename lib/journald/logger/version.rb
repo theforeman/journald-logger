@@ -1,5 +1,5 @@
 module Journald
-  module Logger
-    VERSION = '0.0.2'
+  class Logger
+    VERSION = '0.0.3'
   end
 end
