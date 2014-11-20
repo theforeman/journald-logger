@@ -1,5 +1,8 @@
 # journald-logger
 
+[![Gem Version](https://badge.fury.io/rb/journald-logger.svg)](http://badge.fury.io/rb/journald-logger)
+[![Reference Status](https://www.versioneye.com/ruby/journald-logger/reference_badge.svg)](https://www.versioneye.com/ruby/journald-logger/references)
+
 A Logger drop-in replacement that logs directly to systemd-journal with some additional features
 
 ## Usage
