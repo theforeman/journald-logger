@@ -80,6 +80,30 @@ logger.log_err 'Error'
 logger.log_debug 'Debug'
 ```
 
+## Exception logging
+
+```ruby
+begin
+  raise "Aw, snap!"
+rescue => e
+  logger.exception e # log exception with LOG_CRIT level by default
+  logger.exception e, severity: Logger::WARN        # use Logger severity
+  logger.exception e, priority: Journald::LOG_ALERT # use Syslog priority 
+end
+```
+
+Exception logger automatically fills the following fields:
+
+```
+EXCEPTION_CLASS=ExceptionRealClassName
+EXCEPTION_MESSAGE=Original exception message
+BACKTRACE=full backtrace
+CAUSE=exception cause (Ruby >= 2.1)
+GEM_LOGGER_MESSAGE_TYPE=Exception
+```
+
+In Ruby 2.1 it also tries to log ```CODE_LINE```, ```CODE_FILE``` and ```CODE_FUNC``` and try to recurse into Cause and log it into a separate message with ```GEM_LOGGER_MESSAGE_TYPE=ExceptionCause```
+
 ## License
 
 MIT, see LICENSE.txt
