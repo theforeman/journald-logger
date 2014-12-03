@@ -21,6 +21,7 @@ tmp
 *.a
 mkmf.log
 Makefile
+.idea/
 *.iml
 *.ipr
 *.iws
