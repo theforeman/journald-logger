@@ -1,12 +1,12 @@
 require 'logger'
 require 'journald/native'
 
-require_relative 'logger/version'
-require_relative 'logger/exceptionable'
-require_relative 'logger/loggable'
-require_relative 'logger/sysloggable'
+require_relative 'modules/version'
+require_relative 'modules/exceptionable'
+require_relative 'modules/loggable'
+require_relative 'modules/sysloggable'
 
-require_relative 'tracer_logger'
+require_relative 'trace_logger'
 
 module Journald
   class Logger

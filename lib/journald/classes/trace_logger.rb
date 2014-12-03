@@ -1,5 +1,5 @@
 module Journald
-  class TracerLogger
+  class TraceLogger
     def initialize(progname = nil, tags = {})
       @wrapped_logger = Logger.new(progname, tags)
     end
@@ -34,4 +34,7 @@ module Journald
       end
     end
   end
+
+  # alias for the old class name
+  TracerLogger = TraceLogger
 end
