@@ -11,7 +11,7 @@ A Logger drop-in replacement that logs directly to systemd-journal with some add
 require 'journald/logger'
 
 logger = Journald::Logger.new('gandalf') # simple logger, sets SYSLOG_IDENTIFIER to 'gandalf'
-logger = Journald::TracerLogger.new('gandalf') # tracing logger, logs caller's file, line number and function name
+logger = Journald::TraceLogger.new('gandalf') # tracing logger, logs caller's file, line number and function name
 ```
 
 ## Logger replacement
