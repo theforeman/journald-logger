@@ -4,15 +4,34 @@ module Journald
       @wrapped_logger = Logger.new(progname, tags)
     end
 
-    def method_missing(meth, *args, &block)
-      super unless @wrapped_logger.respond_to? meth
+    PASSTHROUGH_METHODS = [
+        :tag,
+        :tag_value,
+        :untag,
+        :progname,
+        :'progname=',
+        :level,
+        :'level=',
+    ]
 
-      @wrapped_logger.__send__(:tag_trace_location, caller_locations[0])
-      @wrapped_logger.__send__(meth, *args, &block)
-    end
+    METHODS = (
+      Journald::Logger.               public_instance_methods(false) +
+      Journald::Logger::Exceptionable.public_instance_methods(false) +
+      Journald::Logger::Loggable.     public_instance_methods(false) +
+      Journald::Logger::Sysloggable.  public_instance_methods(false)
+    )
 
-    def respond_to_missing?(method_name, include_private = false)
-      @wrapped_logger.respond_to?(method_name, include_private)
+    METHODS.each do |method|
+      if PASSTHROUGH_METHODS.include? method
+        define_method(method) do |*args, &block|
+          @wrapped_logger.public_send(method, *args, &block)
+        end
+      else
+        define_method(method) do |*args, &block|
+          @wrapped_logger.__send__(:tag_trace_location, caller_locations[0])
+          @wrapped_logger.public_send(method, *args, &block)
+        end
+      end
     end
   end
 end
