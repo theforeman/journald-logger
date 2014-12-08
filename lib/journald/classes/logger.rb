@@ -57,7 +57,7 @@ module Journald
 
     protected
 
-      # used internally by exception() and TracerLogger
+      # used internally by exception() and TraceLogger
       def tag_trace_location(location)
         tag :code_file, location.path
         tag :code_line, location.lineno
