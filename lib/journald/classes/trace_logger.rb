@@ -9,9 +9,13 @@ module Journald
         :tag_value,
         :untag,
         :progname,
-        :'progname=',
+        :progname=,
         :level,
-        :'level=',
+        :level=,
+        :sev_threshold,
+        :sev_threshold=,
+        :min_priority,
+        :min_priority=,
     ]
 
     METHODS = (
