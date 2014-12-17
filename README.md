@@ -41,6 +41,15 @@ LEVEL_MAP = {
 
 You may notice it's somewhat different from the one from Syslog::Logger
 
+## Setting report level
+
+```ruby
+logger = Journald::Logger.new('gandalf', Journald::LOG_NOTICE) # set minimal reporting level to notice
+logger.min_priority   = Journald::LOG_NOTICE # runtime change of minimal priority
+logger.level          = Logger::WARN # use Logger severity
+logger.sev_threshold  = Logger::INFO # please pay attention that Logger severity lacks several levels e.g. 'notice'
+```
+
 ## Tags
 
 Tags are used to add systemd-journal fields to all subsequent log calls until removed
