@@ -4,9 +4,10 @@ module Journald
     include Loggable
     include Sysloggable
 
-    def initialize(progname = nil, tags = {})
+    def initialize(progname = nil, min_priority = nil, tags = {})
       @tags   = tags
       @logger = Native
+      self.min_priority = min_priority
       self.progname = progname
     end
 
@@ -16,6 +17,12 @@ module Journald
 
     def progname=(value)
       tag(:syslog_identifier, value)
+    end
+
+    attr_reader :min_priority
+
+    def min_priority=(value)
+      @min_priority = value ? value.to_i : ::Journald::LOG_DEBUG
     end
 
     # systemd-journal style
@@ -83,6 +90,12 @@ module Journald
         array_to_send = hash.map do |k,v|
           key = k.to_s.upcase
           value = v.to_s
+
+          if key == 'PRIORITY'
+            priority = value.to_i
+
+            return 0 if priority > @min_priority # DEBUG = 7, ALERT = 1
+          end
 
           "#{key}=#{value}"
         end

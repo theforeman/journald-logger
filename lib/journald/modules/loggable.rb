@@ -46,7 +46,8 @@ module Journald
         end
 
         define_method("#{severity_key}?".to_sym) do
-          true # journald always logs everything
+          priority = severity_to_priority(severity_value)
+          self.min_priority >= priority
         end
       end
 
@@ -58,15 +59,16 @@ module Journald
 
       # journald always logs everything
       def level
-        ::Logger::DEBUG
+        priority = self.min_priority
+        LEVEL_MAP.select{|_,p| p <= priority}.keys.min
       end
 
-      def sev_threshold
-        ::Logger::DEBUG
+      def level=(severity)
+        self.min_priority = severity_to_priority(severity)
       end
 
-      def level=(_); end
-      def sev_threshold=(_); end
+      alias_method :sev_threshold, :level
+      alias_method :sev_threshold=, :level=
 
       # journald does not require formatter or formatting
       def formatter; end
