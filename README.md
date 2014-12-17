@@ -95,7 +95,7 @@ logger.log_debug 'Debug'
 begin
   raise "Aw, snap!"
 rescue => e
-  logger.exception e # log exception with LOG_CRIT level by default
+  logger.exception e # log exception with LOG_ERR level by default
   logger.exception e, severity: Logger::WARN        # use Logger severity
   logger.exception e, priority: Journald::LOG_ALERT # use Syslog priority 
 end
