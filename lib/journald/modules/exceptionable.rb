@@ -2,7 +2,7 @@ module Journald
   class Logger
     module Exceptionable
       def exception(e, priority: nil, severity: nil)
-        priority ||= severity_to_priority(severity) || Journald::LOG_CRIT
+        priority ||= severity_to_priority(severity) || Journald::LOG_ERR
         real_exception(e, priority, false)
       end
 
