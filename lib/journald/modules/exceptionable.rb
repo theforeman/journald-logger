@@ -12,7 +12,9 @@ module Journald
           # for Ruby 2.1 get cause if present
           cause = if e.respond_to? :cause; e.cause; end
           # for Ruby 2.1 get backtrace if present
-          bt = e.respond_to?(:backtrace_locations) && e.backtrace_locations.length > 0
+          bt = e.respond_to?(:backtrace_locations) &&
+               e.backtrace_locations &&
+               e.backtrace_locations.length > 0
 
           tag_trace_location(e.backtrace_locations[0]) if bt
 
