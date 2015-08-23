@@ -38,7 +38,4 @@ module Journald
       end
     end
   end
-
-  # alias for the old class name
-  TracerLogger = TraceLogger
 end
