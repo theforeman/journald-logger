@@ -21,7 +21,7 @@ module Journald
               gem_logger_message_type:  is_cause ? 'ExceptionCause' : 'Exception',
               exception_class:          e.class.name,
               exception_message:        e.message,
-              backtrace:                e.backtrace.join("\n"),
+              backtrace:                bt ? e.backtrace.join("\n"): nil,
               cause:                    e.cause ? e.cause.inspect : nil,
           })
 
