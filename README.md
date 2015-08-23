@@ -63,7 +63,7 @@ logger.tag(location: 'moria', object: 'balrog') do # change location and use obj
 end # return location & object to the previous state
 # log as 'MESSAGE=That was not in canon!', 'PRIORITY=6', 'LOCATION=shire', 'WORLD=arda', 'WEAPON=staff'
 logger.info 'That was not in canon!'
-logger.untag :location # remove location
+logger.untag :location, :weapon # remove location and weapon
 ```
 
 Tag names must follow systemd-journal fields naming convention:
