@@ -42,13 +42,22 @@ module Journald
 
     # add tags
 
-    # add tag to all log messages
-    def tag(key, value)
-      @tags[key] = value
+    # add tags to all log messages
+    def tag(**tags)
+      values = {}
+      if block_given?
+        # remember old values
+        values = tag_values(*tags.keys)
+      end
+
+      tags.each do |key, value|
+        @tags[key] = value
+      end
 
       if block_given?
         yield
-        untag(key)
+        # restore old values
+        tag(values)
       end
     end
 
@@ -57,9 +66,17 @@ module Journald
       @tags[key]
     end
 
+    # get tag values
+    # return everything including nil for non-set
+    def tag_values(*keys)
+      keys.inject({}) { |hash, key| hash[key] = @tags[key]; hash }
+    end
+
     # stop adding the tag
-    def untag(key)
-      @tags.delete(key)
+    def untag(*keys)
+      keys.each do |key|
+        @tags.delete(key)
+      end
     end
 
     protected
