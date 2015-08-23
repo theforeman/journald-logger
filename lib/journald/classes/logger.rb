@@ -16,7 +16,7 @@ module Journald
     end
 
     def progname=(value)
-      tag(:syslog_identifier, value)
+      tag(syslog_identifier: value)
     end
 
     attr_reader :min_priority
@@ -83,20 +83,20 @@ module Journald
 
       # used internally by exception() and TraceLogger
       def tag_trace_location(location)
-        tag :code_file, location.path
-        tag :code_line, location.lineno
-        tag :code_func, location.label
+        values = tag_values(:code_file, :code_line, :code_func)
+
+        tag code_file: location.path,
+            code_line: location.lineno,
+            code_func: location.label
 
         if block_given?
           yield
-          untag_trace_location
+          tag(values)
         end
       end
 
       def untag_trace_location
-        untag :code_file
-        untag :code_line
-        untag :code_func
+        untag :code_file, :code_line, :code_func
       end
 
     private
