@@ -4,17 +4,7 @@ module Journald
     include Loggable
     include Sysloggable
 
-    def initialize(progname = nil, min_priority = nil, tags = {})
-      if progname.is_a? Hash
-        tags = progname
-        progname = min_priority = nil
-      end
-
-      if min_priority.is_a? Hash
-        tags = min_priority
-        min_priority = nil
-      end
-
+    def initialize(progname = nil, min_priority = nil, **tags)
       @tags   = tags
       @logger = Native
       self.min_priority = min_priority

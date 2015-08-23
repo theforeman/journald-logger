@@ -1,6 +1,6 @@
 module Journald
   class TraceLogger
-    def initialize(progname = nil, min_priority = nil, tags = {})
+    def initialize(progname = nil, min_priority = nil, **tags)
       @wrapped_logger = ::Journald::Logger.new(progname, min_priority, tags)
     end
 
