@@ -82,8 +82,8 @@ module Journald
 
         self.min_priority = temp_priority
 
-        yield
-
+        yield self
+      ensure
         self.min_priority = prev_priority
       end
 
