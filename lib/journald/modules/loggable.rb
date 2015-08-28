@@ -67,6 +67,26 @@ module Journald
         self.min_priority = severity_to_priority(severity)
       end
 
+      def silence(temporary_severity = nil, severity: nil, priority: nil)
+        prev_priority = self.min_priority
+
+        severity ||= temporary_severity
+
+        temp_priority = if priority
+                          priority
+                        elsif severity
+                          severity_to_priority(severity)
+                        else
+                          LOG_ERR
+                        end
+
+        self.min_priority = temp_priority
+
+        yield
+
+        self.min_priority = prev_priority
+      end
+
       alias_method :sev_threshold, :level
       alias_method :sev_threshold=, :level=
 
