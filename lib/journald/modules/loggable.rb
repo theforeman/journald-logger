@@ -27,11 +27,11 @@ module Journald
           end
         end
 
-        send({
+        send(
             priority: priority,
             message:  message,
             syslog_identifier: progname,
-        })
+        )
       end
 
       alias_method :log, :add
