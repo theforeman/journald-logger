@@ -87,6 +87,8 @@ module Journald
         self.min_priority = prev_priority
       end
 
+      alias_method :silence_logger, :silence
+
       alias_method :sev_threshold, :level
       alias_method :sev_threshold=, :level=
 
