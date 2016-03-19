@@ -34,10 +34,10 @@ module Journald
     end
 
     def print(priority, message)
-      send({
+      send(
         priority: priority,
         message:  message,
-      })
+      )
     end
 
     # add tags
@@ -55,10 +55,10 @@ module Journald
       end
 
       if block_given?
-        yield
-        # restore old values
-        tag(values)
+        yield self
       end
+    ensure
+      tag(values) if values.any? # restore old values if block given
     end
 
     # get tag value
@@ -83,16 +83,9 @@ module Journald
 
       # used internally by exception() and TraceLogger
       def tag_trace_location(location)
-        values = tag_values(:code_file, :code_line, :code_func)
-
         tag code_file: location.path,
             code_line: location.lineno,
             code_func: location.label
-
-        if block_given?
-          yield
-          tag(values)
-        end
       end
 
       def untag_trace_location
