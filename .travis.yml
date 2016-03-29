@@ -1,0 +1,13 @@
+# test with minimum and current and previous version of ruby; try default version of rbx
+
+language: ruby
+os:
+  - xenial # we cannot actually test until xenial is added to Travis
+rvm:
+  - '2.1.0'
+  - '2.2.4'
+  - '2.3.0'
+  - rbx
+script:
+  - bundle exec rake compile
+  - bundle exec rspec
