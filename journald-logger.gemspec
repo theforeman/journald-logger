@@ -6,10 +6,10 @@ Gem::Specification.new do |spec|
   spec.name          = 'journald-logger'
   spec.version       = Journald::Logger::VERSION
   spec.authors       = ['Anton Smirnov']
-  spec.email         = ['sandfox@sandfox.im']
+  spec.email         = ['sandfox@sandfox.me']
   spec.summary       = %q{systemd-journal native logger}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = 'https://github.com/sandfox-im/journald-logger'
+  spec.homepage      = 'https://github.com/sandfoxme/journald-logger'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
