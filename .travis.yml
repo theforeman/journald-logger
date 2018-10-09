@@ -4,6 +4,7 @@ language: ruby
 os:
   - xenial # we cannot actually test until xenial is added to Travis
 rvm:
+  - '2.0.0'
   - '2.1.0'
   - '2.2.4'
   - '2.3.0'
