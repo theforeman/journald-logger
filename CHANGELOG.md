@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.4
+
+*October 9, 2018*
+
+* Return support for ruby 2.0.0
+
 ## v2.0.3
 
 *March 14, 2016*
