@@ -108,11 +108,11 @@ Exception logger automatically fills the following fields:
 EXCEPTION_CLASS=ExceptionRealClassName
 EXCEPTION_MESSAGE=Original exception message
 BACKTRACE=full backtrace
-CAUSE=exception cause
+CAUSE=exception cause (Ruby >= 2.1)
 GEM_LOGGER_MESSAGE_TYPE=Exception
 ```
 
-It also tries to log ```CODE_LINE```, ```CODE_FILE``` and ```CODE_FUNC``` and try to recurse into Cause and log it into a separate message with ```GEM_LOGGER_MESSAGE_TYPE=ExceptionCause```
+In Ruby 2.1+ it also tries to log ```CODE_LINE```, ```CODE_FILE``` and ```CODE_FUNC``` and to recurse into Cause and log it into a separate message with ```GEM_LOGGER_MESSAGE_TYPE=ExceptionCause```
 
 ## Authors
 
