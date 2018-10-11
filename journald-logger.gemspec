@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Anton Smirnov']
   spec.email         = ['sandfox@sandfox.me']
   spec.summary       = %q{systemd-journal native logger}
-  # spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = 'https://github.com/sandfoxme/journald-logger'
+  spec.homepage      = 'https://github.com/theforeman/journald-logger'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")

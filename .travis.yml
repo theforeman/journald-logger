@@ -1,14 +1,13 @@
-# test with minimum and current and previous version of ruby; try default version of rbx
-
 language: ruby
-os:
-  - xenial # we cannot actually test until xenial is added to Travis
+before_install:
+  - sudo apt-get install -y libsystemd-journal-dev
+install: "bundle install"
 rvm:
-  - '2.0.0'
-  - '2.1.0'
-  - '2.2.4'
-  - '2.3.0'
-  - rbx
+  - 2.0.0
+  - 2.1.0
+  - 2.2.0
+  - 2.3.0
+  - 2.4.0
 script:
-  - bundle exec rake compile
   - bundle exec rspec
+  - bundle exec rake build
