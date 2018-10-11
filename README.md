@@ -1,7 +1,6 @@
 # journald-logger
 
-[![Gem Version](https://badge.fury.io/rb/journald-logger.svg)](http://badge.fury.io/rb/journald-logger)
-[![Reference Status](https://www.versioneye.com/ruby/journald-logger/reference_badge.svg)](https://www.versioneye.com/ruby/journald-logger/references)
+[![Build Status](https://travis-ci.org/theforeman/journald-logger.svg?branch=master)](https://travis-ci.org/theforeman/journald-logger)
 
 A Logger drop-in replacement that logs directly to systemd-journal with some additional features
 
@@ -114,6 +113,10 @@ GEM_LOGGER_MESSAGE_TYPE=Exception
 ```
 
 It also tries to log ```CODE_LINE```, ```CODE_FILE``` and ```CODE_FUNC``` and try to recurse into Cause and log it into a separate message with ```GEM_LOGGER_MESSAGE_TYPE=ExceptionCause```
+
+## Authors
+
+This library was written by Anton Smirnov and currently maintained by https://www.theforeman.org developers.
 
 ## License
 
