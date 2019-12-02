@@ -18,7 +18,7 @@ module Journald
 
         tag_trace_location(e.backtrace_locations[0]) if bt
 
-        send(
+        send_message(
           priority: priority,
           message: "Exception #{e.inspect}",
           gem_logger_message_type: is_cause ? "ExceptionCause" : "Exception",

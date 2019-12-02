@@ -1,7 +1,5 @@
 # journald-logger
 
-[![Build Status](https://travis-ci.org/theforeman/journald-logger.svg?branch=master)](https://travis-ci.org/theforeman/journald-logger)
-
 A Logger drop-in replacement that logs directly to systemd-journal with some additional features
 
 ## Usage
@@ -73,7 +71,7 @@ letters, numbers, underscores, cannot begin with underscore. Library upcases all
 Two methods which look similarly to native systemd-journal api
 
 ```ruby
-logger.send(
+logger.send_message(
   message: 'hi!',
   priority: Journald::LOG_NOTICE,
   any_field: 'any_value',

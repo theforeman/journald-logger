@@ -27,7 +27,7 @@ module Journald
           end
         end
 
-        send(
+        send_message(
           priority: priority,
           message: message,
           syslog_identifier: progname,

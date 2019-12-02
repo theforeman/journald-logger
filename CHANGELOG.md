@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.0
+
+*December 3, 2019*
+
+- Do not override Ruby send method (API change)
+
 ## v2.0.4
 
 *October 9, 2018*
