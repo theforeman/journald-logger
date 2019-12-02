@@ -1,13 +1,10 @@
 language: ruby
 before_install:
-  - sudo apt-get install -y libsystemd-journal-dev
+  - sudo apt-get install -y libsystemd-dev
 install: "bundle install"
 rvm:
   - 2.0.0
-  - 2.1.0
-  - 2.2.0
-  - 2.3.0
-  - 2.4.0
+  - 2.6.0
 script:
-  - bundle exec rspec
   - bundle exec rake build
+  - bundle exec rake

@@ -28,13 +28,13 @@ module Journald
     # systemd-journal style
 
     # send systemd-journal message
-    def send(hash)
+    def send_message(hash)
       hash_to_send = @tags.merge(hash)
       real_send(hash_to_send)
     end
 
     def print(priority, message)
-      send(
+      send_message(
         priority: priority,
         message: message,
       )
