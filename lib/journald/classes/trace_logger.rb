@@ -5,25 +5,23 @@ module Journald
     end
 
     PASSTHROUGH_METHODS = [
-        :tag,
-        :tag_value,
-        :untag,
-        :progname,
-        :progname=,
-        :level,
-        :level=,
-        :sev_threshold,
-        :sev_threshold=,
-        :min_priority,
-        :min_priority=,
+      :tag,
+      :tag_value,
+      :untag,
+      :progname,
+      :progname=,
+      :level,
+      :level=,
+      :sev_threshold,
+      :sev_threshold=,
+      :min_priority,
+      :min_priority=,
     ]
 
-    METHODS = (
-      Journald::Logger.               public_instance_methods(false) +
-      Journald::Logger::Exceptionable.public_instance_methods(false) +
-      Journald::Logger::Loggable.     public_instance_methods(false) +
-      Journald::Logger::Sysloggable.  public_instance_methods(false)
-    )
+    METHODS = (Journald::Logger.public_instance_methods(false) +
+               Journald::Logger::Exceptionable.public_instance_methods(false) +
+               Journald::Logger::Loggable.public_instance_methods(false) +
+               Journald::Logger::Sysloggable.public_instance_methods(false))
 
     METHODS.each do |method|
       if PASSTHROUGH_METHODS.include? method
@@ -32,7 +30,7 @@ module Journald
         end
       else
         define_method(method) do |*args, &block|
-          @wrapped_logger.__send__(:tag_trace_location, caller_locations[0])
+          @wrapped_logger.__send__(:tag_trace_location, caller_locations(1..1).first)
           @wrapped_logger.public_send(method, *args, &block)
         end
       end

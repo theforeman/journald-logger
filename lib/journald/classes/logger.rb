@@ -5,7 +5,7 @@ module Journald
     include Sysloggable
 
     def initialize(progname = nil, min_priority = nil, **tags)
-      @tags   = tags
+      @tags = tags
       @logger = Native
       self.min_priority = min_priority
       self.progname = progname
@@ -36,7 +36,7 @@ module Journald
     def print(priority, message)
       send(
         priority: priority,
-        message:  message,
+        message: message,
       )
     end
 
@@ -81,36 +81,36 @@ module Journald
 
     protected
 
-      # used internally by exception() and TraceLogger
-      def tag_trace_location(location)
-        tag code_file: location.path,
-            code_line: location.lineno,
-            code_func: location.label
-      end
+    # used internally by exception() and TraceLogger
+    def tag_trace_location(location)
+      tag code_file: location.path,
+          code_line: location.lineno,
+          code_func: location.label
+    end
 
-      def untag_trace_location
-        untag :code_file, :code_line, :code_func
-      end
+    def untag_trace_location
+      untag :code_file, :code_line, :code_func
+    end
 
     private
 
-      def real_send(hash)
-        hash = hash.delete_if { |_, v| v.nil? }
+    def real_send(hash)
+      hash = hash.delete_if { |_, v| v.nil? }
 
-        array_to_send = hash.map do |k,v|
-          key = k.to_s.upcase
-          value = v.to_s
+      array_to_send = hash.map do |k, v|
+        key = k.to_s.upcase
+        value = v.to_s
 
-          if key == 'PRIORITY'
-            priority = value.to_i
+        if key == "PRIORITY"
+          priority = value.to_i
 
-            return 0 if priority > @min_priority # DEBUG = 7, ALERT = 1
-          end
-
-          "#{key}=#{value}"
+          return 0 if priority > @min_priority # DEBUG = 7, ALERT = 1
         end
 
-        @logger.send(*array_to_send)
+        "#{key}=#{value}"
       end
+
+      @logger.send(*array_to_send)
+    end
   end
 end
