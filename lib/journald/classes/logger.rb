@@ -58,7 +58,7 @@ module Journald
         yield self
       end
     ensure
-      tag(values) if values.any? # restore old values if block given
+      tag(**values) if values.any? # restore old values if block given
     end
 
     # get tag value
