@@ -5,6 +5,7 @@ install: "bundle install"
 rvm:
   - 2.0.0
   - 2.6.0
+  - 2.7.1
 script:
   - bundle exec rake build
   - bundle exec rake
