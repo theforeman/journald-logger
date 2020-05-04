@@ -73,12 +73,12 @@ module Journald
         severity ||= temporary_severity
 
         temp_priority = if priority
-                          priority
-                        elsif severity
-                          severity_to_priority(severity)
-                        else
-                          LOG_ERR
-                        end
+            priority
+          elsif severity
+            severity_to_priority(severity)
+          else
+            LOG_ERR
+          end
 
         self.min_priority = temp_priority
 
