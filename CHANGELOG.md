@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.1
+
+*May 6, 2020*
+
+- Ruby 2.7 warning resolved
+
 ## v3.0.0
 
 *December 3, 2019*
