@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.0
+
+*March 30, 2020*
+
+- Ruby 2.5 is minimum required version
+- Fixed argument for Ruby 3.x
+
 ## v3.0.1
 
 *May 6, 2020*
