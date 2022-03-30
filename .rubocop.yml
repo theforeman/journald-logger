@@ -2,7 +2,9 @@ AllCops:
   Exclude:
     - "spec/**/*"
     - "vendor/**/*"
-  TargetRubyVersion: 2.0
+  TargetRubyVersion: 2.5
+  SuggestExtensions: false
+  NewCops: enable
 
 Layout:
   Enabled: false
