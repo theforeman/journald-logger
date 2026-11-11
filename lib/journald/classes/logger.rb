@@ -1,5 +1,7 @@
 module Journald
   class Logger
+    TAG_CONTEXTS_THREAD_KEY = :journald_logger_tag_contexts
+
     include Exceptionable
     include Loggable
     include Sysloggable
@@ -29,7 +31,7 @@ module Journald
 
     # send systemd-journal message
     def send_message(hash)
-      hash_to_send = @tags.merge(hash)
+      hash_to_send = @tags.merge(scoped_tag_values).merge(hash)
       real_send(hash_to_send)
     end
 
@@ -44,38 +46,35 @@ module Journald
 
     # add tags to all log messages
     def tag(**tags)
-      values = {}
       if block_given?
-        # remember old values
-        values = tag_values(*tags.keys)
+        with_scoped_tags(tags) { yield self }
+      else
+        (current_tag_frame || @tags).merge!(tags)
+        tags
       end
-
-      tags.each do |key, value|
-        @tags[key] = value
-      end
-
-      if block_given?
-        yield self
-      end
-    ensure
-      tag(**values) if values.any? # restore old values if block given
     end
 
     # get tag value
     def tag_value(key)
-      @tags[key]
+      values = scoped_tag_values
+      values.key?(key) ? values[key] : @tags[key]
     end
 
     # get tag values
     # return everything including nil for non-set
     def tag_values(*keys)
-      keys.inject({}) { |hash, key| hash[key] = @tags[key]; hash }
+      keys.inject({}) { |hash, key| hash[key] = tag_value(key); hash }
     end
 
     # stop adding the tag
     def untag(*keys)
+      current_tags = current_tag_frame || @tags
       keys.each do |key|
-        @tags.delete(key)
+        if current_tags.equal?(@tags)
+          current_tags.delete(key)
+        else
+          current_tags[key] = nil
+        end
       end
     end
 
@@ -93,6 +92,31 @@ module Journald
     end
 
     private
+
+    def with_scoped_tags(tags)
+      contexts = Thread.current[TAG_CONTEXTS_THREAD_KEY] ||= {}
+      frames = contexts[self] ||= []
+      frames << tags
+      yield
+    ensure
+      frames.pop
+      contexts.delete(self) if frames.empty?
+      Thread.current[TAG_CONTEXTS_THREAD_KEY] = nil if contexts.empty?
+    end
+
+    def current_tag_frame
+      contexts = Thread.current[TAG_CONTEXTS_THREAD_KEY]
+      frames = contexts && contexts[self]
+      frames && frames.last
+    end
+
+    def scoped_tag_values
+      contexts = Thread.current[TAG_CONTEXTS_THREAD_KEY]
+      frames = contexts && contexts[self]
+      return {} unless frames
+
+      frames.each_with_object({}) { |frame, values| values.merge!(frame) }
+    end
 
     def real_send(hash)
       hash = hash.delete_if { |_, v| v.nil? }

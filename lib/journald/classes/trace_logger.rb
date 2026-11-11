@@ -25,14 +25,25 @@ module Journald
 
     METHODS.each do |method|
       if PASSTHROUGH_METHODS.include? method
-        define_method(method) do |*args, &block|
-          @wrapped_logger.public_send(method, *args, &block)
+        define_method(method) do |*args, **kwargs, &block|
+          @wrapped_logger.public_send(method, *args, **kwargs, &forward_block(block))
         end
       else
-        define_method(method) do |*args, &block|
+        define_method(method) do |*args, **kwargs, &block|
           @wrapped_logger.__send__(:tag_trace_location, caller_locations(1..1).first)
-          @wrapped_logger.public_send(method, *args, &block)
+          @wrapped_logger.public_send(method, *args, **kwargs, &forward_block(block))
         end
+      end
+    end
+
+    private
+
+    def forward_block(block)
+      return unless block
+
+      proc do |*arguments|
+        arguments.map! { |argument| argument.equal?(@wrapped_logger) ? self : argument }
+        block.call(*arguments)
       end
     end
   end

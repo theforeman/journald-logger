@@ -15,6 +15,7 @@ module Journald
 
       def add(severity, message = nil, progname = nil)
         priority = severity_to_priority(severity) || LEVEL_MAP[::Logger::UNKNOWN]
+        return 0 if priority > self.min_priority
 
         # some black magic from Logger O__o
         progname ||= self.progname
