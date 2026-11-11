@@ -60,6 +60,19 @@ RSpec.describe Journald::Logger do
       expect(inside_message).to include("REQUEST_ID=thread")
     end
 
+    it "does not evaluate filtered message blocks" do
+      evaluated = false
+      @logger.min_priority = Journald::LOG_ERR
+
+      @logger.debug do
+        evaluated = true
+        "filtered"
+      end
+
+      expect(evaluated).to be(false)
+      expect(Journald::Native).not_to have_received(:send)
+    end
+
     it "logs exceptions" do
       # todo: expects
       begin
@@ -67,6 +80,39 @@ RSpec.describe Journald::Logger do
       rescue => e
         @logger.exception e
       end
+    end
+  end
+end
+
+RSpec.describe Journald::TraceLogger do
+  it "yields the trace wrapper from tag and silence blocks" do
+    messages = Queue.new
+    allow(Journald::Native).to receive(:send) do |*fields|
+      messages << fields
+      0
+    end
+
+    logger = described_class.new("rspec trace logger", Journald::LOG_DEBUG)
+    tag_block_logger = nil
+    logger.tag(scope: "tag") do |block_logger|
+      tag_block_logger = block_logger
+      block_logger.info("tagged")
+    end
+
+    silence_block_logger = nil
+    logger.silence(Logger::DEBUG) do |block_logger|
+      silence_block_logger = block_logger
+      block_logger.info("silenced")
+    end
+
+    expect(tag_block_logger).to equal(logger)
+    expect(silence_block_logger).to equal(logger)
+
+    tag_message = messages.pop
+    silence_message = messages.pop
+    expect(tag_message).to include("SCOPE=tag")
+    [tag_message, silence_message].each do |fields|
+      expect(fields.grep(/\ACODE_FILE=/)).not_to be_empty
     end
   end
 end
