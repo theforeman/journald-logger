@@ -2,7 +2,7 @@ AllCops:
   Exclude:
     - "spec/**/*"
     - "vendor/**/*"
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.0
   SuggestExtensions: false
   NewCops: enable
 
@@ -18,5 +18,9 @@ Style:
 Naming:
   Enabled: false
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes

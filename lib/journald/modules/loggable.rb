@@ -45,7 +45,7 @@ module Journald
           add(severity_value, nil, progname, &block)
         end
 
-        define_method("#{severity_key}?".to_sym) do
+        define_method(:"#{severity_key}?") do
           priority = severity_to_priority(severity_value)
           self.min_priority >= priority
         end
