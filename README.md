@@ -1,5 +1,8 @@
 # journald-logger
 
+[![CI](https://github.com/theforeman/journald-logger/actions/workflows/ruby.yml/badge.svg)](https://github.com/theforeman/journald-logger/actions/workflows/ruby.yml)
+[![RuboCop](https://github.com/theforeman/journald-logger/actions/workflows/rubocop.yml/badge.svg)](https://github.com/theforeman/journald-logger/actions/workflows/rubocop.yml)
+
 A Logger drop-in replacement that logs directly to systemd-journal with some additional features
 
 ## Usage

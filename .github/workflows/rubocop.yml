@@ -1,0 +1,21 @@
+name: RuboCop
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.ref_name }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  rubocop:
+    name: RuboCop
+    uses: theforeman/actions/.github/workflows/rubocop.yml@v1
+    with:
+      ruby: "3.0"
+      additional_packages: libsystemd-dev
